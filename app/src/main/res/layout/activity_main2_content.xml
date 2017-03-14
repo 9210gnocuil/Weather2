@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/main2_content_root"
+    android:layout_height="match_parent">
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/main2_iv_bg"
+        android:layout_width="match_parent"
+        android:background="@color/textColor"
+        android:layout_height="match_parent" />
+
+    <ScrollView
+        android:scrollbars="none"
+        android:padding="10dp"
+        android:id="@+id/main2_sv_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--最上面的toolbar-->
+            <RelativeLayout
+                android:paddingBottom="10dp"
+                android:id="@+id/main2_rl_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:id="@+id/main2_iv_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_view_headline_black_48dp" />
+
+                <ImageView
+                    android:id="@+id/main2_iv_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/wall_share" />
+
+                <ImageView
+                    android:id="@+id/main2_iv_locate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/main2_iv_share"
+                    android:alpha="0.7"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_my_location_white_36dp" />
+
+            </RelativeLayout>
+
+            <!--正在播报今日天气-->
+            <RelativeLayout
+                android:id="@+id/main2_rl_speak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp">
+
+                <ImageView
+                    android:id="@+id/main2_iv_voice"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_notifications_none_black_48dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_toRightOf="@id/main2_iv_voice"
+                    android:gravity="center_vertical"
+                    android:text="语音报天气"
+                    android:textColor="@color/textColor"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:gravity="right"
+                    android:id="@+id/main2_tv_updateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_below="@+id/main2_iv_voice"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:text="更新时间:2017-3-14 14：20"
+                    android:textColor="@color/textColor"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <!--天气Icon以及 aqi 预警-->
+            <RelativeLayout
+                android:id="@+id/main2_rl_weather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:layout_marginTop="100dp">
+
+                <ImageView
+                    android:id="@+id/main2_iv_weatherIcon"
+                    android:layout_width="180dp"
+                    android:scaleType="fitXY"
+                    android:layout_height="180dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:alpha="0.9"
+                    android:src="@drawable/big_white_06" />
+
+                <TextView
+                    android:id="@+id/main2_tv_weatherInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/main2_iv_weatherIcon"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="小雪"
+                    android:textColor="@color/textColor"
+                    android:textSize="30sp" />
+
+                <!--aqi和预警-->
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/main2_cv_aqi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        app:cardBackgroundColor="#4000"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:id="@+id/main_tv_aqi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:padding="5dp"
+                            android:text="32*优"
+                            android:textColor="#FFF"
+                            android:textSize="13sp" />
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/main2_cv_warn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/main2_cv_aqi"
+                        android:layout_marginTop="10dp"
+                        app:cardBackgroundColor="#4000"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:id="@+id/main_tv_warn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:padding="5dp"
+                            android:text="雷电预警"
+                            android:textColor="#FFF"
+                            android:textSize="13sp" />
+                    </android.support.v7.widget.CardView>
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+
+            <!--定位地址-->
+            <LinearLayout
+                android:id="@+id/main2_ll_location"
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_margin="2dp"
+                    android:alpha="0.7"
+                    android:src="@drawable/ic_place_white_36dp" />
+
+                <TextView
+                    android:id="@+id/main2_tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="巴黎"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!--湿度能见度-->
+            <LinearLayout
+                android:id="@+id/main2_ll_humidity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/main2_tv_humidity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="湿度:80%"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/main2_tv_visibility"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="能见度:3.2km"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </LinearLayout>
+            <!--日出日落时间-->
+            <LinearLayout
+                android:id="@+id/main2_ll_sunrise_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/main2_tv_sunrise"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="日出:7:10am"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/main2_tv_sunset"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="日出落:5:10pm"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <com.liucong.weather2.view.HistogramView
+                android:id="@+id/main2_hv_temp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#2000"
+                android:gravity="center"
+                android:text="一天的天气变化-占坑"
+                android:textColor="@color/textColor"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="温馨提示"
+                android:textColor="@color/textColor" />
+
+            <include layout="@layout/tablayout_suggestion" />
+
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout
+        android:visibility="invisible"
+        android:id="@+id/main2_rl_loading"
+        android:background="#8FFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/main2_pb"
+            android:layout_centerInParent="true"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="正在更新中..."
+            android:layout_below="@id/main2_pb"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
