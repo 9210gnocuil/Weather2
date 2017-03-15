@@ -274,6 +274,12 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 Log.i(TAG, "handResponse: 发送消息给handler更新ui");
 
             }else{
+                //数据更新失败，首先检查是否是网络的原因，如果是没有网络，则将自动更新服务停掉
+                if(NetworkUtils.isNetworkAvailable()==-1){
+                    //没网，
+                    Intent intent = new Intent(Main2Activity.this,UpdateService.class);
+                    stopService(intent);
+                }
                 handler.sendEmptyMessage(UPDATE_UI_ERR);
             }
         }
@@ -431,4 +437,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+
+    //注册广播接收者，如果服务中更新了数据，并且这个应用没有退出，那么就通知主页更新数据
+
+
 }

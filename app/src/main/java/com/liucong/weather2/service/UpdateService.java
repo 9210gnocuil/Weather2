@@ -39,7 +39,8 @@ public class UpdateService extends Service {
 
     public UpdateService() {
         handler = new Handler();
-        updateTimeInterval = SharedPrefsUtil.get(ActivityConstant.UPDATE_TIME_INTERVAL,1000*3600);
+        updateTimeInterval = SharedPrefsUtil.get(ActivityConstant.UPDATE_TIME_INTERVAL,1);
+        updateTimeInterval*=1000*3600;
         updateNowIntent = new Intent("com.liucong.weather2.UPDATEUI.CACHE_OK");
         updateErrIntent = new Intent("com.liucong.weather2.UPDATEUI.CACHE_FAIL");
     }

@@ -63,6 +63,9 @@ public class SettingActivity extends AppCompatActivity {
 
                 btnUpdateInterval.setVisibility(sv.isChecked()?View.VISIBLE:View.INVISIBLE);
 
+                //将服务状态保存起来
+                SharedPrefsUtil.save(ActivityConstant.UPDATE_SERVICE_IS_RUNNING,sv.isChecked());
+
                 //开启服务：
                 if(sv.isChecked()){
                     //服务默认是1小时更新

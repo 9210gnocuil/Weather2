@@ -47,4 +47,5 @@ public class ActivityConstant {
 
     public static final String UPDATE_STATUS = "update_status";
     public static final String UPDATE_TIME_INTERVAL = "update_time_interval";
+    public static final String UPDATE_SERVICE_IS_RUNNING = "update_service_is_running";
 }

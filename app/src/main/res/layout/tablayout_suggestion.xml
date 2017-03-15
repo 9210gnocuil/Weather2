@@ -211,7 +211,6 @@
                     android:gravity="center_horizontal"
                     android:text="紫外线指数"
                     android:textColor="#FFF"
-                    android:paddingBottom="10dp"
                     />
                 <TextView
                     android:id="@+id/main2_sug_ziwaixian_res"
