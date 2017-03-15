@@ -44,4 +44,7 @@ public class ActivityConstant {
 
     public static final String DATABASE_NAME_CITY = "city.db";
     public static final String DATABASE_LOC_CITY = "data/data/com.liucong.weather2/databases/city.db";
+
+    public static final String UPDATE_STATUS = "update_status";
+    public static final String UPDATE_TIME_INTERVAL = "update_time_interval";
 }

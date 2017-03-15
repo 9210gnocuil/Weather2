@@ -14,6 +14,7 @@ import android.util.Log;
 import com.liucong.weather2.constant.ActivityConstant;
 import com.liucong.weather2.utils.FileUtils;
 import com.liucong.weather2.utils.InitDataUtils;
+import com.liucong.weather2.utils.SharedPrefsUtil;
 
 /**
  * 后台更新天气信息
@@ -33,14 +34,12 @@ public class UpdateService extends Service {
     private Intent updateErrIntent;
 
     private long updateTimeInterval;
-    private long updateTimeIntervalTest;
 
     private boolean eshCompleted = true;
 
     public UpdateService() {
         handler = new Handler();
-        updateTimeInterval = 1000*3600L;
-        updateTimeIntervalTest = 1000L;
+        updateTimeInterval = SharedPrefsUtil.get(ActivityConstant.UPDATE_TIME_INTERVAL,1000*3600);
         updateNowIntent = new Intent("com.liucong.weather2.UPDATEUI.CACHE_OK");
         updateErrIntent = new Intent("com.liucong.weather2.UPDATEUI.CACHE_FAIL");
     }
@@ -59,13 +58,13 @@ public class UpdateService extends Service {
         handler.removeCallbacks(updateRunnaleTest);
         handler = null;
         updateRunnaleTest = null;
+
+        Log.i("UpdateService","自动更新服务已经关闭");
         super.onDestroy();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Log.i("onStartCommand","服务正在更新天气");
 
         //拿到Activity中的数据
         long interval = intent.getLongExtra("TimeInterval", 0);
@@ -73,12 +72,13 @@ public class UpdateService extends Service {
             // 说明不是第一次启动服务
             // 这是有数据了
             // 将更新时间间隔设置为Activity传送过来的事件
+            Log.i("UpdateService","自动更新时间已经更改");
             updateTimeInterval = interval;
-            updateTimeIntervalTest = interval;
         }
 
-        handler.postDelayed(updateRunnaleTest,updateTimeIntervalTest);
+        handler.postDelayed(updateRunnaleTest,updateTimeInterval);
 
+        Log.i("UpdateService","自动更新时间为:"+updateTimeInterval/1000/3600+"小时");
 
         //开启子线程请求数据，保存到本地
         //每次启动这个方法就要将之前没有执行的runbale任务取消掉
@@ -94,8 +94,9 @@ public class UpdateService extends Service {
         public void run() {
             //如果多次启动 则将前面的run给取消掉 保证不会多次执行
             handler.removeCallbacks(this);
-            Log.i("UpdateService", "正在更新数据:"+ SystemClock.uptimeMillis());
-            handler.postDelayed(this,updateTimeIntervalTest);
+            Log.i("onStartCommand","服务正在更新天气");
+            Log.i("UpdateService", "更新数据中:"+ SystemClock.uptimeMillis());
+            handler.postDelayed(this,updateTimeInterval);
         }
     };
     private Runnable updateRunnale = new Runnable() {
@@ -131,6 +132,10 @@ public class UpdateService extends Service {
                         Log.i("服务", "Update: "+"天气信息请求失败");
                         sendBroadcast(updateNowIntent);
                     }
+
+                    //失败了也要更新，不过需要先判断是否有网络
+                    //每隔updateTimeInterval事件更新一次
+                    handler.postDelayed(updateRunnale,updateTimeInterval);
                 }
             });
 
@@ -171,4 +176,5 @@ public class UpdateService extends Service {
         });
 
     }
+
 }

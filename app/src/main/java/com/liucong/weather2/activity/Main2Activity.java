@@ -6,12 +6,18 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,12 +34,14 @@ import com.liucong.weather2.constant.NetworkConstant;
 import com.liucong.weather2.other.MyApplication;
 import com.liucong.weather2.service.UpdateService;
 import com.liucong.weather2.utils.DBUtils;
+import com.liucong.weather2.utils.DisplayUtils;
 import com.liucong.weather2.utils.FileUtils;
 import com.liucong.weather2.utils.InitDataUtils;
 import com.liucong.weather2.utils.JsonParseUtils;
 import com.liucong.weather2.utils.NetworkUtils;
 import com.liucong.weather2.utils.SharedPrefsUtil;
 import com.liucong.weather2.view.HistogramView;
+import com.liucong.weather2.view.SettingView;
 import com.squareup.picasso.Picasso;
 
 import net.qiujuer.genius.blur.StackBlur;
@@ -66,6 +74,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.main2_iv_bg)
     ImageView main2IvBg;
 
+    //左上角的菜单按钮 将抽屉拉出来 main2_iv_menu
+    @BindView(R.id.main2_iv_menu)
+    ImageView main2IvMenu;
 
     // 中间显示天气状况图片：main2_iv_weatherIcon
     @BindView(R.id.main2_iv_weatherIcon)
@@ -133,6 +144,15 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     TextView main2SugLY;
     @BindView(R.id.main2_sug_ziwaixian_res)
     TextView main2SugXWX;
+
+
+    //NavigationView main2_nav
+    @BindView(R.id.main2_nav)
+    NavigationView main2Nav;
+
+    //main2_dl_root
+    @BindView(R.id.main2_dl_root)
+    DrawerLayout main2DlRoot;
 
 
     private Intent intent;
@@ -314,35 +334,12 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         }
         
         main2HvTemp.setData(dataList,bottomTextList,max+5);
-    
-        //填充几个生活指数数据
-        /*  public DetailSuggsetion air;//空气指数
-            public DetailSuggsetion comf;//舒适度指数
-            public DetailSuggsetion cw;//洗车指数
-            public DetailSuggsetion drsg;//穿衣指数
-            public DetailSuggsetion flu;//感冒指数
-            public DetailSuggsetion sport;//运动指数
-            public DetailSuggsetion trav;//旅游指数
-            public DetailSuggsetion uv;//紫外线指数*/
-
-       /* String spliteStr = ",";
-        if(info.suggestion.comf.txt.indexOf(spliteStr) == -1){
-            spliteStr = "，";
-        }
-
-        String test = "天气较好，但丝毫不会影响您出行的心情。";
-        String[] strings = test.split("，");
-        for(int i=0;i<strings.length;i++){
-            Log.i("test",i+":"+strings[i]);
-        }
-
-        Log.i("testIndexof",""+test.indexOf("，"));*/
 
         //没有简介的时候
         if(TextUtils.isEmpty(info.suggestion.comf.bref)){
             main2SugSSD.setText(info.suggestion.comf.txt.split("，")[0]);
             main2SugXC.setText(info.suggestion.cw.txt.split("，")[0]);
-            main2SugCY.setText(info.suggestion.drsg.txt.split("，")[0]);
+            main2SugCY.setText(info.suggestion.drsg.txt.split("。")[0]);
             main2SugGM.setText(info.suggestion.flu.txt.split("，")[0]);
             main2SugYD.setText(info.suggestion.sport.txt.split("，")[0]);
             main2SugLY.setText(info.suggestion.trav.txt.split("，")[0]);
@@ -359,6 +356,15 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initView() {
+
+        //将Nav的宽度设置为屏幕的一半
+        int screenWidth = DisplayUtils.getScreenWidth();
+        ViewGroup.LayoutParams layoutParams = main2Nav.getLayoutParams();
+        layoutParams.width = screenWidth/2;
+        main2Nav.setLayoutParams(layoutParams);
+        //给Nav设置监听
+        main2Nav.setNavigationItemSelectedListener(navListener);
+
         //高斯模糊
         Bitmap bitmapOri = BitmapFactory.decodeResource(getResources(), R.drawable.static_02);
         Bitmap newBitmap = StackBlur.blurNatively(bitmapOri, (int)
@@ -369,7 +375,32 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         main2LlLoc.setOnClickListener(this);
 
         main2RlLoading.setVisibility(View.VISIBLE);
+
+        main2IvMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main2DlRoot.openDrawer(GravityCompat.START);
+            }
+        });
     }
+
+    private NavigationView.OnNavigationItemSelectedListener navListener= new NavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.nav_settings:
+                    //进入设置界面
+                    Intent intent = new Intent(Main2Activity.this, SettingActivity.class);
+                    startActivity(intent);
+                    //关闭抽屉
+                    main2DlRoot.closeDrawers();
+                    break;
+                case R.id.nav_about:
+                    break;
+            }
+            return true;
+        }
+    };
 
     @Override
     public void onClick(View v) {

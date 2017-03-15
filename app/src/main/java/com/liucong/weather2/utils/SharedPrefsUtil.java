@@ -31,9 +31,16 @@ public class SharedPrefsUtil {
 
         getSharedPrefs().edit().putBoolean(key,value).commit();
     }
+    public static void save(String key, long value) {
+
+        getSharedPrefs().edit().putLong(key,value).commit();
+    }
 
     public static int get(String key,int defaultValue) {
         return getSharedPrefs().getInt(key,defaultValue);
+    }
+    public static long get(String key,long defaultValue) {
+        return getSharedPrefs().getLong(key,defaultValue);
     }
 
     public static boolean get(String key,boolean defaultValue) {

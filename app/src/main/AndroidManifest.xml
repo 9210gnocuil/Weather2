@@ -28,11 +28,21 @@
             android:name=".service.UpdateService"
             android:enabled="true"
             android:exported="true" />
-        <activity android:name=".activity.SelectLocActivity"></activity>
 
+        <activity android:name=".activity.SelectLocActivity" />
         <activity
             android:name=".activity.Main2Activity"
             android:theme="@style/MainActivityTheme" />
+        <activity android:name=".activity.SettingActivity" />
+
+        <receiver
+            android:name=".receiver.NetStatusChangeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
