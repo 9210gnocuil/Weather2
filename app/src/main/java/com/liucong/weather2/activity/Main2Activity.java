@@ -25,6 +25,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.SynthesizerListener;
 import com.liucong.weather2.R;
 import com.liucong.weather2.bean.Citys;
 import com.liucong.weather2.bean.WeatherResp;
@@ -46,7 +51,9 @@ import com.squareup.picasso.Picasso;
 
 import net.qiujuer.genius.blur.StackBlur;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -154,6 +161,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.main2_dl_root)
     DrawerLayout main2DlRoot;
 
+    //main2_rl_speak
+    @BindView(R.id.main2_rl_speak)
+    RelativeLayout main2RlSpeak;
+
+    //main2_tv_voice
+    @BindView(R.id.main2_tv_voice)
+    TextView main2TvSpeak;
+
 
     private Intent intent;
     private Intent changeTimeIntent ;
@@ -194,6 +209,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         ButterKnife.bind(this);
         ButterKnife.bind(main2_content_root);
         ButterKnife.bind(main2SugRoot);
+
 
         initData();
         initView();
@@ -388,6 +404,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 main2DlRoot.openDrawer(GravityCompat.START);
             }
         });
+
+        main2RlSpeak.setOnClickListener(this);
     }
 
     private NavigationView.OnNavigationItemSelectedListener navListener= new NavigationView.OnNavigationItemSelectedListener() {
@@ -415,8 +433,85 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 //点击弹出选择地区
                 Intent intentSelectLoc = new Intent(Main2Activity.this,SelectLocActivity.class);
                 startActivityForResult(intentSelectLoc,REQUEST_CODE_SELECT_LOC);
+                break;
+            case R.id.main2_rl_speak:
+                Log.i("onClick", "点击了");
+                SpeechSynthesizer mTts= SpeechSynthesizer.createSynthesizer(Main2Activity.this, null);
+                mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan"); //设置发音人
+                mTts.setParameter(SpeechConstant.SPEED, "50");//设置语速
+                mTts.setParameter(SpeechConstant.VOLUME, "80");//设置音量，范围 0~100
+                mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端
+                String speakStr = formatingVoiceStr();
+                if(speakStr == null){
+                    return;
+                }
+                mTts.startSpeaking(speakStr, mSynListener);
+                Log.i("onClick", "读完了");
+                break;
         }
     }
+
+    private String formatingVoiceStr(){
+        if(weatherInfo == null){
+            return null;
+        }
+
+        WeatherResp.DailyForecast dailyForecast = weatherInfo.daily_forecast.get(0);
+
+        String weatherStr = "今天是"+formatDate()+
+                ",为你播报"+weatherInfo.basic.city+"今日天气：今天白天"+dailyForecast.cond.txt_d+
+                ","+"夜间"+dailyForecast.cond.txt_n+
+                ","+dailyForecast.tmp.min+"到"+dailyForecast.tmp.max+"度，"+
+                dailyForecast.wind.sc;
+
+        return weatherStr;
+
+        /*String today = "今天是"+formatDate();
+        String wea = "为你播报今日天气：今天白天"+dailyForecast.cond.txt_d+","+"夜间"+dailyForecast.cond.txt_n;
+        String todayTemp = dailyForecast.tmp.min+"到"+dailyForecast.tmp.max+"度，";
+        String wind = dailyForecast.wind.sc+"级风";*/
+
+    }
+    private String formatDate(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        return simpleDateFormat.format(new Date());
+    }
+
+    private SynthesizerListener mSynListener = new SynthesizerListener() {
+        @Override
+        public void onSpeakBegin() {
+            //将按钮禁用
+            main2RlSpeak.setEnabled(false);
+            main2TvSpeak.setText("正在播报天气...");
+        }
+
+        @Override
+        public void onBufferProgress(int i, int i1, int i2, String s) {
+        }
+
+        @Override
+        public void onSpeakPaused() {
+        }
+
+        @Override
+        public void onSpeakResumed() {
+        }
+
+        @Override
+        public void onSpeakProgress(int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onCompleted(SpeechError speechError) {
+            //将按钮启用
+            main2RlSpeak.setEnabled(true);
+            main2TvSpeak.setText("点击播报天气");
+        }
+
+        @Override
+        public void onEvent(int i, int i1, int i2, Bundle bundle) {
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

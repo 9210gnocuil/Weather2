@@ -72,11 +72,12 @@
                     android:src="@drawable/ic_notifications_none_black_48dp" />
 
                 <TextView
+                    android:id="@+id/main2_tv_voice"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_toRightOf="@id/main2_iv_voice"
                     android:gravity="center_vertical"
-                    android:text="语音报天气"
+                    android:text="点击播报天气"
                     android:textColor="@color/textColor"
                     android:textSize="13sp" />
 
