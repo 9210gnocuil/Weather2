@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.liucong.weather2.other.MyApplication;
-import com.liucong.weather2.service.UpdateService;
 
 import java.util.List;
 

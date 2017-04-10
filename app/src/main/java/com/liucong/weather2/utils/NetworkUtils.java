@@ -54,15 +54,4 @@ public class NetworkUtils {
         return resultCode;
     }
 
-    public static void get(String url,Callback callback){
-
-        if(TextUtils.isEmpty(url)) {
-            return ;
-        }
-
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
-        client.newCall(request).enqueue(callback);
-
-    }
 }

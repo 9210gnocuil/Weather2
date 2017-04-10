@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/showweather_content_root"
+    android:layout_height="match_parent">
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/showweather_iv_bg"
+        android:layout_width="match_parent"
+        android:background="@drawable/static_02"
+        android:layout_height="match_parent" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/showweather_srl_flush"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:scrollbars="none"
+            android:padding="10dp"
+            android:id="@+id/showweather_sv_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!--正在播报今日天气-->
+                <RelativeLayout
+                    android:id="@+id/showweather_rl_speak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp">
+
+                    <ImageView
+                        android:id="@+id/showweather_iv_voice"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_notifications_none_black_48dp" />
+
+                    <TextView
+                        android:id="@+id/showweather_tv_voice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_toRightOf="@id/showweather_iv_voice"
+                        android:gravity="center_vertical"
+                        android:text="点击播报天气"
+                        android:textColor="@color/textColor"
+                        android:textSize="13sp" />
+
+                    <TextView
+
+                        android:gravity="center"
+                        android:id="@+id/showweather_tv_updateTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:text="更新时间:2017-3-14 14：20"
+                        android:textColor="@color/textColor"
+                        android:textSize="13sp" />
+                </RelativeLayout>
+
+                <!--天气Icon以及 aqi 预警-->
+                <RelativeLayout
+                    android:id="@+id/showweather_rl_weather"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginTop="100dp">
+
+                    <ImageView
+                        android:id="@+id/showweather_iv_weatherIcon"
+                        android:layout_width="180dp"
+                        android:scaleType="fitXY"
+                        android:layout_height="180dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:alpha="0.9"
+                        android:src="@drawable/big_white_06" />
+
+                    <TextView
+                        android:id="@+id/showweather_tv_weatherInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/showweather_iv_weatherIcon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="小雪"
+                        android:textColor="@color/textColor"
+                        android:textSize="30sp" />
+                </RelativeLayout>
+
+
+
+                <!--定位地址-->
+                <LinearLayout
+                    android:id="@+id/showweather_ll_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp">
+
+                    <ImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_margin="2dp"
+                        android:alpha="0.7"
+                        android:src="@drawable/ic_place_white_36dp" />
+
+                    <TextView
+                        android:id="@+id/showweather_tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="巴黎"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <RelativeLayout
+        android:visibility="invisible"
+        android:id="@+id/showweather_rl_loading"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <ProgressBar
+            android:id="@+id/showweather_pb"
+            android:layout_centerInParent="true"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="加载中..."
+            android:layout_below="@id/showweather_pb"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>
